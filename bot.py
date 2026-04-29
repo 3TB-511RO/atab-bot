@@ -436,5 +436,5 @@ def run_bot():
     print("Atab bot is running 👁️")
     app.run_polling()
 
-threading.Thread(target=run_flask).start()
+threading.Thread(target=run_flask, daemon=True).start()
 run_bot()
