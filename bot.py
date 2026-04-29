@@ -447,5 +447,5 @@ def run_bot():
 # =====================
 
 if __name__ == "__main__":
-    threading.Thread(target=run_web, daemon=True).start()
-    run_bot()
+    threading.Thread(target=run_bot, daemon=True).start()
+run_web()
