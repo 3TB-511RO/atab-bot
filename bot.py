@@ -181,3 +181,28 @@ def run_web():
     app.run(host="0.0.0.0", port=port)
 
 threading.Thread(target=run_web).start()
+import os
+import threading
+from flask import Flask
+
+# تشغيل البوت
+def run_bot():
+    # حط كود البوت حقك هنا
+    # مثال:
+    import bot  # أو الكود الحالي
+    bot.main()  # حسب كودك
+
+# السيرفر
+app = Flask(__name__)
+
+@app.route("/")
+def home():
+    return "Bot is running"
+
+def run_web():
+    port = int(os.environ.get("PORT", 10000))
+    app.run(host="0.0.0.0", port=port)
+
+# تشغيل الاثنين مع بعض
+threading.Thread(target=run_bot).start()
+threading.Thread(target=run_web).start()
