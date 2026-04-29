@@ -1,4 +1,5 @@
 # ضع مفاتيحك هنا
+import os
 import base64
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup, LabeledPrice
 from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, ContextTypes, filters, CallbackQueryHandler, PreCheckoutQueryHandler
@@ -9,10 +10,10 @@ from PIL import Image
 # =========================
 # مفاتيحك
 # =========================
-TOKEN = os.getenv("8645142103:AAGthMqYyhUc8S_SHf1jb1SRmMH8kTqQV_Y")
+TOKEN = ("8645142103:AAGthMqYyhUc8S_SHf1jb1SRmMH8kTqQV_Y")
 import os
 
-OPENAI_KEY = os.getenv("OPENAI_KEY")
+OPENAI_KEY = ("OPENAI_KEY")
 PRIMARY_DEV = 8662704115
 DEV_LOG_CHAT_ID = "@rorproto"
 
@@ -205,4 +206,19 @@ def run_web():
 
 # تشغيل الاثنين مع بعض
 threading.Thread(target=run_bot).start()
+threading.Thread(target=run_web).start()
+from flask import Flask
+import threading
+import os
+
+app = Flask(__name__)
+
+@app.route('/')
+def home():
+    return "Bot is running!"
+
+def run_web():
+    port = int(os.environ.get("PORT", 10000))
+    app.run(host="0.0.0.0", port=port)
+
 threading.Thread(target=run_web).start()
