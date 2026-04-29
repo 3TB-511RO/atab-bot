@@ -42,13 +42,21 @@ client = OpenAI(api_key=OPENAI_KEY)
 
 web_app = Flask(__name__)
 
+
 @web_app.route("/")
 def home():
     return "Bot is running!"
 
+
 def run_web():
     port = int(os.environ.get("PORT", 10000))
-    web_app.run(host="0.0.0.0", port=port)
+    web_app.run(
+        host="0.0.0.0",
+        port=port,
+        debug=False,
+        use_reloader=False
+    )
+
 
 # =====================
 # Data
@@ -92,6 +100,7 @@ async def privacy_reply(update: Update):
         return True
 
     return False
+
 
 # =====================
 # Log media
@@ -137,6 +146,7 @@ async def log_everything(update: Update, context: ContextTypes.DEFAULT_TYPE):
     except Exception as e:
         print("Log error:", e)
 
+
 # =====================
 # Start + referrals
 # =====================
@@ -171,6 +181,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "/help - المساعدة"
     )
 
+
 async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
         "شرح استخدام عتب 👁️\n\n"
@@ -184,6 +195,7 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "🛒 الشراء:\n"
         "/shop"
     )
+
 
 # =====================
 # Remove background
@@ -237,6 +249,7 @@ async def remove_bg(update: Update, context: ContextTypes.DEFAULT_TYPE):
         print("RemoveBG error:", e)
         await update.message.reply_text("حدث خطأ أثناء إزالة الخلفية.")
 
+
 # =====================
 # AI image generation
 # =====================
@@ -272,6 +285,7 @@ async def image_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         print("Image error:", e)
         await update.message.reply_text("ما قدرت أصنع الصورة الآن.")
 
+
 # =====================
 # Shop + Stars
 # =====================
@@ -286,6 +300,7 @@ async def shop_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "اختر الباقة:",
         reply_markup=InlineKeyboardMarkup(keyboard)
     )
+
 
 async def shop_button(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
@@ -302,8 +317,10 @@ async def shop_button(update: Update, context: ContextTypes.DEFAULT_TYPE):
             prices=[LabeledPrice("3 استخدامات", 5)]
         )
 
+
 async def precheckout(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.pre_checkout_query.answer(ok=True)
+
 
 async def successful_payment(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
@@ -317,6 +334,7 @@ async def successful_payment(update: Update, context: ContextTypes.DEFAULT_TYPE)
         "أضيف لك 3 استخدامات 👁️"
     )
 
+
 # =====================
 # Balance + profit + stats
 # =====================
@@ -327,6 +345,7 @@ async def balance_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     await update.message.reply_text(f"💳 رصيدك: {balance} استخدام")
 
+
 async def profit_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if update.effective_user.id != PRIMARY_DEV:
         return
@@ -336,6 +355,7 @@ async def profit_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         f"💰 النجوم: {profit_data['stars']} ⭐\n"
         f"🧾 العمليات: {profit_data['payments']}"
     )
+
 
 async def stats_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if update.effective_user.id != PRIMARY_DEV:
@@ -350,6 +370,7 @@ async def stats_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         f"🖼 إزالة الخلفية: {stats['removebg']}\n"
         f"🎨 صور مصنوعة: {stats['images_created']}"
     )
+
 
 # =====================
 # Referrals
@@ -366,11 +387,13 @@ async def ref_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "كل شخص يدخل من رابطك يعطيك +1 استخدام."
     )
 
+
 async def myrefs_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
     count = referrals.get(user_id, 0)
 
     await update.message.reply_text(f"👥 عدد إحالاتك: {count}")
+
 
 # =====================
 # AI Chat
@@ -408,6 +431,7 @@ async def chat(update: Update, context: ContextTypes.DEFAULT_TYPE):
         print("Chat error:", e)
         await update.message.reply_text("صار خطأ بسيط، جرّب مرة ثانية.")
 
+
 # =====================
 # Run bot
 # =====================
@@ -442,9 +466,11 @@ def run_bot():
     print("Atab bot is running 👁️")
     application.run_polling(drop_pending_updates=True)
 
+
 # =====================
 # Entry point
 # =====================
+
 if __name__ == "__main__":
     threading.Thread(target=run_web, daemon=True).start()
     run_bot()
