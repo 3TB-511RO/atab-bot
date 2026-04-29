@@ -165,3 +165,19 @@ app.add_handler(MessageHandler(filters.SUCCESSFUL_PAYMENT, success))
 
 print("Atab running 👁️")
 app.run_polling()
+
+from flask import Flask
+import os
+import threading
+
+app = Flask(__name__)
+
+@app.route("/")
+def home():
+    return "Bot is running"
+
+def run_web():
+    port = int(os.environ.get("PORT", 10000))
+    app.run(host="0.0.0.0", port=port)
+
+threading.Thread(target=run_web).start()
