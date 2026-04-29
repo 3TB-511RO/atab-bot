@@ -6,6 +6,16 @@ from PIL import Image
 from rembg import remove
 from openai import OpenAI
 
+app = Flask(__name__)
+
+@app.route('/')
+def home():
+    return "Bot is running!"
+
+def run_flask():
+    port = int(os.environ.get("PORT", 10000))
+    app.run(host="0.0.0.0", port=port)
+
 from telegram import (
     Update,
     InlineKeyboardButton,
@@ -426,5 +436,5 @@ def run_bot():
     print("Atab bot is running 👁️")
     app.run_polling()
 
-threading.Thread(target=run_web).start()
+threading.Thread(target=run_flask).start()
 run_bot()
