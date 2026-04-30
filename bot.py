@@ -2013,6 +2013,6 @@ def run_bot():
 # Entry Point
 # =====================
 
-if __name__ == "__main__":
-    threading.Thread(target=run_bot, daemon=True).start()
-    run_web()
+if _name_ == "_main_":
+    threading.Thread(target=run_web, daemon=True).start()
+    run_bot()
